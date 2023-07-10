@@ -4,7 +4,9 @@ var bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
 const authRoute = require("./routes/authRoutes");
+const notesRoute = require("./routes/notesRoutes");
 app.use("/api/v1", authRoute);
+app.use("/api/v1", notesRoute);
 
 
 app.use((err, req, res, next)=>{

@@ -1,4 +1,5 @@
 const appError = require("../utils/appError");
+const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 exports.protect = async (req, res, next) => {
   // 1) get the token if it exist
@@ -18,18 +19,18 @@ exports.protect = async (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, async (err, authData) => {
       if (err) {
         return next(new appError("Invalid Token.", 401));
-      } else {
-        req.auth = authData;
-        next();
       }
-      //3) check this user exists
-      // const userExist = await User.findOne({ where: { id: authData.id } });
-      // console.log(userExist);
-      // if (userExist) {
+      //  else {
+      //   req.auth = authData;
       //   next();
-      // } else {
-      //   return next(new appError("This user is not exist.", 401));
       // }
+      // 3) check this user exists
+      const userExist = await User.findOne({ where: { id: authData.id } });
+      if (userExist) {
+        next();
+      } else {
+        return next(new appError("This user is not exist.", 401));
+      }
     });
   } catch (err) {
     console.log(err);
