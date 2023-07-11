@@ -59,6 +59,17 @@ exports.updateNotes = async (req, res, next) => {
       return next(new appError("Notes does not exist", 401));
     }
     req.body.status = "completed";
+    // other way
+    // await Users.update({
+    //     name: name,
+    //     email: email,
+    //     password: password,
+    //     age: age,
+    //     state: state,
+    //     city: city,
+    //   },
+    //   { where: { id: user.id } }
+    // );
     const updatedNotes = await notes.update(req.body);
 
     res.status(201).json({
@@ -86,6 +97,8 @@ exports.deleteNotes = async (req, res, next) => {
     if (!notes) {
       return next(new appError("Notes does not exist", 401));
     }
+    // other way
+    // await Users.destroy({ where: { id: user.id } });
     const deletedNotes = await notes.destroy();
 
     res.status(201).json({
